@@ -1,21 +1,17 @@
 package cheapSpring.cheapSpring;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class EmagRequests extends BaseAbstractRequest {
-
+public class AmazonRequests extends BaseAbstractRequest{
     private static HttpURLConnection con;
     private static URI uri;
-    private static String EMAG_SEARCH = "https://emag.ro/search/";
+    private static String EMAG_SEARCH = "https://www.amazon.com/s?k=";
     private static String userInput = null;
 
-    public EmagRequests() throws URISyntaxException {
+    public AmazonRequests() throws URISyntaxException {
     }
 
     public static URI buildUrl() throws URISyntaxException {
@@ -23,7 +19,7 @@ public class EmagRequests extends BaseAbstractRequest {
         if (userInput != null) {
             if (!userInput.isEmpty() && userInput.contains(" ")) {
                 while (userInput.contains(" ")) {
-                    input = input.append(userInput.replace(" ", "%20"));
+                    input = input.append(userInput.replace(" ", "+"));
                     userInput = userInput.substring(userInput.indexOf(" ") + 1, userInput.length());
                 }
             } else {
@@ -31,15 +27,16 @@ public class EmagRequests extends BaseAbstractRequest {
             }
             EMAG_SEARCH = EMAG_SEARCH.concat(input.toString());
         }
-        EMAG_SEARCH = EMAG_SEARCH.concat("?ref=effective_search");
+        EMAG_SEARCH = EMAG_SEARCH.concat("&ref=nb_sb_noss");
         return new URI(EMAG_SEARCH);
     }
 
-    public static void makeEmagCall() throws IOException, URISyntaxException {
-        userInput = "ms.w aparat";
+    public static void makeAmazonCall() throws IOException, URISyntaxException {
+        userInput = "xiaomi";
         uri = buildUrl();
-        requestSearchItem(uri,"GET");
+        requestSearchItem(uri, "GET");
         getResponse();
     }
+
 
 }
